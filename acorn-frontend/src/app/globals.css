@@ -3,10 +3,11 @@
   --foreground: #171717;
 }
 
+/* Force light theme */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
 }
 
@@ -35,8 +36,7 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Force light color scheme */
+html {
+  color-scheme: light;
 }

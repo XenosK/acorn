@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getToken, removeToken } from "@/lib/auth";
+import { getToken } from "@/lib/auth";
 import { verifyToken } from "@/lib/api";
-import Navbar from "@/components/Navbar";
-import styles from "./page.module.css";
+import Navbar from "./Navbar";
 
-export default function DashboardPage() {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,6 @@ export default function DashboardPage() {
         const response = await verifyToken(token);
         setUsername(response.username);
       } catch {
-        removeToken();
         router.push("/login");
       } finally {
         setLoading(false);
@@ -36,8 +38,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Loading...</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+        <div>加载中...</div>
       </div>
     );
   }
@@ -47,16 +49,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className={styles.container}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <Navbar username={username} />
-      <main className={styles.main}>
-        <div className={styles.content}>
-          <h1 className={styles.title}>Hello World</h1>
-          <p className={styles.message}>
-            You have successfully logged in!
-          </p>
-        </div>
-      </main>
+      {children}
     </div>
   );
 }
